@@ -28,7 +28,8 @@ TODAY_DATE = datetime.date.today()
 run system below cmd
 
 ```
-python main.py
+python japanese.py
+python nasdaq.py
 ```
 
 ### implimented analysing method

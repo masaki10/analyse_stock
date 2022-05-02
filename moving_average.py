@@ -12,7 +12,7 @@ class MovingAverage:
         end = cf.TODAY_DATE
         start = end - datetime.timedelta(days=365)
         try:
-            self.df = data.DataReader(f"{self.code}.T", "yahoo", start, end)
+            self.df = data.DataReader(f"{self.code}", "yahoo", start, end)
             self.is_data = True
         except:
             self.is_data = False

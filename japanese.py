@@ -14,7 +14,7 @@ if __name__ == "__main__":
         reader = csv.reader(f)
         for row in reader:
             print(row[0])
-            mv_avg = MovingAverage([5, 25], row[0])
+            mv_avg = MovingAverage([5, 25], row[0]+".T")
             # mv_avg = MovingAverage([5, 25], "1413")
             mv_avg.calc_cross()
             if mv_avg.get_golden_cross():

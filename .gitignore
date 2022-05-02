@@ -1,3 +1,5 @@
 stock
 config.py
 __pycache__
+test_code.py
+nasdaq_symbols.csv
