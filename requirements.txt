@@ -1,0 +1,4 @@
+selenium
+chromedriver_binary==100.0.4896.60
+pandas
+pandas-datareader
