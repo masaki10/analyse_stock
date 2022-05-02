@@ -1,7 +1,8 @@
 import datetime
 from pandas_datareader import data
 import numpy as np
-import config as cf
+
+TODAY_DATE = datetime.date.today()
 
 class MovingAverage:
     def __init__(self, days, code):
@@ -9,7 +10,7 @@ class MovingAverage:
         self.code = code
     
     def _get_stock_price(self):
-        end = cf.TODAY_DATE
+        end = TODAY_DATE
         start = end - datetime.timedelta(days=365)
         try:
             self.df = data.DataReader(f"{self.code}", "yahoo", start, end)
@@ -34,8 +35,8 @@ class MovingAverage:
             return False
         print(self.df.tail(5))
         try:
-            self.end_price = self.df.loc[cf.TODAY_DATE.strftime("%Y-%m-%d")]["Close"]
-            if self.df.loc[cf.TODAY_DATE.strftime("%Y-%m-%d")]["Cross"] == "GC":
+            self.end_price = self.df.loc[TODAY_DATE.strftime("%Y-%m-%d")]["Close"]
+            if self.df.loc[TODAY_DATE.strftime("%Y-%m-%d")]["Cross"] == "GC":
                 return True
             return False
         except:
@@ -45,8 +46,8 @@ class MovingAverage:
         if not self.is_data:
             return False
         try:
-            self.end_price = self.df.loc[cf.TODAY_DATE.strftime("%Y-%m-%d")]["Close"]
-            if self.df.loc[cf.TODAY_DATE.strftime("%Y-%m-%d")]["Cross"] == "DC":
+            self.end_price = self.df.loc[TODAY_DATE.strftime("%Y-%m-%d")]["Close"]
+            if self.df.loc[TODAY_DATE.strftime("%Y-%m-%d")]["Cross"] == "DC":
                 return True
             return False
         except:

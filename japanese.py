@@ -3,8 +3,9 @@ import csv
 import datetime
 from moving_average import MovingAverage
 from twitter_util import TwitterUtil
-import config as cf
 import math
+
+TODAY_DATE = datetime.date.today()
 
 if __name__ == "__main__":
     gcs = []
@@ -28,7 +29,7 @@ if __name__ == "__main__":
     cnt = 0
     page = 1
     pages = math.ceil(len(gcs)/10)
-    content = f"{cf.TODAY_DATE} golden cross stock({page}/{pages})\n"
+    content = f"{TODAY_DATE} golden cross stock({page}/{pages})\n"
     if len(gcs) == 0:
         content += "nothing"
         tw_util.tweet(content)
@@ -41,12 +42,12 @@ if __name__ == "__main__":
                 tw_util.tweet(content)
                 cnt = 0
                 page += 1
-                content = f"{cf.TODAY_DATE} golden cross stock({page}/{pages})\n"
+                content = f"{TODAY_DATE} golden cross stock({page}/{pages})\n"
 
     cnt = 0
     page = 1
     pages = math.ceil(len(dcs)/10)
-    content = f"{cf.TODAY_DATE} dead cross stock({page}/{pages})\n"
+    content = f"{TODAY_DATE} dead cross stock({page}/{pages})\n"
     if len(dcs) == 0:
         content += "nothing"
         tw_util.tweet(content)
@@ -59,4 +60,4 @@ if __name__ == "__main__":
                 tw_util.tweet(content)
                 cnt = 0
                 page += 1
-                content = f"{cf.TODAY_DATE} golden cross stock({page}/{pages})\n"
+                content = f"{TODAY_DATE} golden cross stock({page}/{pages})\n"
