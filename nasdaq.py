@@ -28,26 +28,34 @@ if __name__ == "__main__":
     page = 1
     pages = math.ceil(len(gcs)/10)
     content = f"{cf.TODAY_DATE} golden cross stock({page}/{pages})\n"
-    for gc in gcs:
-        ctt = f"{gc[1]}({gc[0]}) : {gc[2]}円"
-        content += ctt
-        cnt += 1
-        if cnt == 10:
-            tw_util.tweet(content)
-            cnt = 0
-            page += 1
-            content = f"{cf.TODAY_DATE} golden cross stock({page}/{pages})\n"
+    if len(gcs) == 0:
+        content += "nothing"
+        tw_util.tweet(content)
+    else:
+        for gc in gcs:
+            ctt = f"{gc[1]}({gc[0]}) : {gc[2]}円"
+            content += ctt
+            cnt += 1
+            if cnt == 10:
+                tw_util.tweet(content)
+                cnt = 0
+                page += 1
+                content = f"{cf.TODAY_DATE} golden cross stock({page}/{pages})\n"
 
     cnt = 0
     page = 1
     pages = math.ceil(len(dcs)/10)
     content = f"{cf.TODAY_DATE} dead cross stock({page}/{pages})\n"
-    for dc in dcs:
-        ctt = f"{dc[1]}({dc[0]}) : {dc[2]}円"
-        content += ctt
-        cnt += 1
-        if cnt == 10:
-            tw_util.tweet(content)
-            cnt = 0
-            page += 1
-            content = f"{cf.TODAY_DATE} golden cross stock({page}/{pages})\n"
+    if len(dcs) == 0:
+        content += "nothing"
+        tw_util.tweet(content)
+    else:
+        for dc in dcs:
+            ctt = f"{dc[1]}({dc[0]}) : {dc[2]}円"
+            content += ctt
+            cnt += 1
+            if cnt == 10:
+                tw_util.tweet(content)
+                cnt = 0
+                page += 1
+                content = f"{cf.TODAY_DATE} golden cross stock({page}/{pages})\n"
