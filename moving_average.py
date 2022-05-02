@@ -1,6 +1,7 @@
 import datetime
 from pandas_datareader import data
 import numpy as np
+import config as cf
 
 class MovingAverage:
     def __init__(self, days, code):
@@ -8,28 +9,48 @@ class MovingAverage:
         self.code = code
     
     def _get_stock_price(self):
-        end = datetime.date.today()
-        start = end + datetime.timedelta(days=365)
-        self.df = data.DataReader(f"{self.code}.T", "yahoo", start, end)
+        end = cf.TODAY_DATE
+        start = end - datetime.timedelta(days=365)
+        try:
+            self.df = data.DataReader(f"{self.code}.T", "yahoo", start, end)
+            self.is_data = True
+        except:
+            self.is_data = False
 
-    def calc_moving_avgs(self):
+    def _calc_moving_avgs(self):
         self._get_stock_price()
-        for day in self.days:
-            self.df[f"MA{str(day)}"] =  self.df["Close"].rolling(window=day).mean()
+        if self.is_data:
+            for day in self.days:
+                self.df[f"MA{str(day)}"] =  self.df["Close"].rolling(window=day).mean()
 
     def calc_cross(self):
-        diff = self.df[f"MA{str(self.days[0])}"] - self.df[f"MA{str(self.days[0])}"]
-        self.df["Cross"] = np.where(np.sign(diff) - np.sign(diff.shift(1)) == 2, "GC", np.where(np.sign(diff) - np.sign(diff.shift(1)) == -2, "DC", np.nan))
+        self._calc_moving_avgs()
+        if self.is_data:
+            diff = self.df[f"MA{str(self.days[0])}"] - self.df[f"MA{str(self.days[0])}"]
+            self.df["Cross"] = np.where(np.sign(diff) - np.sign(diff.shift(1)) == 2, "GC", np.where(np.sign(diff) - np.sign(diff.shift(1)) == -2, "DC", np.nan))
 
     def get_golden_cross(self):
-        if self.df.loc[datetime.date.today()]["GC"] == np.nan:
+        if not self.is_data:
             return False
-        return True
+        print(self.df.tail(5))
+        try:
+            self.end_price = self.df.loc[cf.TODAY_DATE.strftime("%Y-%m-%d")]["Close"]
+            if self.df.loc[cf.TODAY_DATE.strftime("%Y-%m-%d")]["Cross"] == "GC":
+                return True
+            return False
+        except:
+            return False
 
     def get_dead_cross(self):
-        if self.df.loc[datetime.date.today()]["DC"] == np.nan:
+        if not self.is_data:
             return False
-        return True
+        try:
+            self.end_price = self.df.loc[cf.TODAY_DATE.strftime("%Y-%m-%d")]["Close"]
+            if self.df.loc[cf.TODAY_DATE.strftime("%Y-%m-%d")]["Cross"] == "DC":
+                return True
+            return False
+        except:
+            return False
 
     def calc_deviation_rate(self):
         pass
